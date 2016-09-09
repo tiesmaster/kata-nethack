@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 
 using KataNetHack.Console.PlayerSubsystem;
 
+using Moq;
+
 using Xunit;
 
 namespace KataNetHack.Tests.PlayerSubsystem
@@ -16,7 +18,34 @@ namespace KataNetHack.Tests.PlayerSubsystem
         [Fact]
         public void CanCreateSut()
         {
-            var sut = new Player(default(Point));
+            var sut = CreateSut();
+        }
+
+        [Fact]
+        public void MoveNorthSuccessfullyDecrementsYPosition()
+        {
+            var sut = CreateSut();
+            int expectedYPosition = sut.Y - 1;
+
+            sut.MoveNorth();
+
+            Assert.Equal(expectedYPosition, sut.Y);
+        }
+
+        [Fact]
+        public void MoveSouthSuccessfullyIncrementsYPosition()
+        {
+            var sut = CreateSut();
+            int expectedYPosition = sut.Y + 1;
+
+            sut.MoveSouth();
+
+            Assert.Equal(expectedYPosition, sut.Y);
+        }
+
+        private static Player CreateSut()
+        {
+            return new Player(Mock.Of<IMap>());
         }
     }
 }
